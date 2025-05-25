@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Gallery App</title>
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+    <div id="top-bar"></div>
+    <div class="gallery-container">
+        <!-- Gallery items will be dynamically inserted here -->
+    </div>
+    
+    <div class="bottom-nav">
+        <button id="btn-all" class="nav-button active">All</button>
+        <button id="btn-album" class="nav-button">Album</button>
+    </div>
+    <div class="upload-container">
+        <input type="file" id="file-upload" multiple />
+        <button id="upload-button">Upload</button>
+    </div>
+    
+    <div id="preview-modal" class="modal hidden">
+        <div class="modal-content">
+            <span class="close-button" id="close-preview">&times;</span>
+            <button id="prev-button" class="nav-modal-button">&#10094;</button>
+            <button id="next-button" class="nav-modal-button">&#10095;</button>
+            <div id="preview-area"></div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
