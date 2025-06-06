@@ -153,9 +153,7 @@ document.getElementById("btn-all").addEventListener("click", () => {
 });
 
 document.getElementById("btn-album").addEventListener("click", () => {
-    currentAlbum = null;
-    showingAlbums = true;
-    renderGallery();
+    renderAlbumInterface();
     updateNavButtons();
 });
 
@@ -684,10 +682,26 @@ function renderGallery() {
         galleryItem.innerHTML = `<img src="${item.src}" alt="${item.name}" />`;
         galleryGrid.appendChild(galleryItem);
     });
+    updateGalleryHeaderCount();
 }
 
 // Call renderGallery on load
 renderGallery();
+
+function getTotalItemCount() {
+    // Count all images, videos, and documents in galleryData
+    const totalImages = galleryData.filter(item => item.type === 'image').length;
+    const totalVideos = galleryData.filter(item => item.type === 'video').length;
+    const totalDocuments = galleryData.filter(item => item.type === 'document').length;
+    return `${totalImages} Images, ${totalVideos} Videos, ${totalDocuments} Documents`;
+}
+
+function updateGalleryHeaderCount() {
+    const countSpan = document.querySelector('.gallery-header-count');
+    if (countSpan) {
+        countSpan.textContent = getTotalItemCount();
+    }
+}
 
 // Add swipe up and down animations for the bottom bar
 (function enableSwipeForBottomBar() {
@@ -744,74 +758,55 @@ renderGallery();
 
 function renderAlbumInterface() {
     const galleryContainer = document.querySelector(".gallery-container");
-    galleryContainer.innerHTML = "";
-
-    const albumData = [
-        { name: "Gallery View", icon: "https://via.placeholder.com/50", color: "#FFC107" },
-        { name: "Snaps", icon: "https://via.placeholder.com/50", color: "#03A9F4" },
-        { name: "Docs+", icon: "https://via.placeholder.com/50", color: "#8BC34A" },
-        { name: "Other Spaces", icon: "https://via.placeholder.com/50", color: "#FF5722" },
-        { name: "Recover Bin", icon: "https://via.placeholder.com/50", color: "#9E9E9E" },
-        { name: "New Album", icon: "https://via.placeholder.com/50", color: "#673AB7" }
-    ];
-
-    albumData.forEach(album => {
-        const albumItem = document.createElement("div");
-        albumItem.className = "album-item";
-        albumItem.style.backgroundColor = album.color;
-        albumItem.innerHTML = `
-            <img src="${album.icon}" alt="${album.name}" class="album-icon" />
-            <span class="album-name">${album.name}</span>
-        `;
-        galleryContainer.appendChild(albumItem);
-    });
+    galleryContainer.innerHTML = `
+        <div class="main-menu-grid">
+            <div class="main-menu-card gallery-view">
+                <div class="main-menu-icon gallery-icon"></div>
+                <div class="main-menu-title">Gallery View</div>
+                <div class="main-menu-underline gallery-underline"></div>
+            </div>
+            <div class="main-menu-card snaps">
+                <div class="main-menu-icon snaps-icon"></div>
+                <div class="main-menu-title">Snaps</div>
+                <div class="main-menu-underline snaps-underline"></div>
+            </div>
+            <div class="main-menu-card docs">
+                <div class="main-menu-icon docs-icon"></div>
+                <div class="main-menu-title">Docs+</div>
+                <div class="main-menu-underline docs-underline"></div>
+            </div>
+            <div class="main-menu-card spaces">
+                <div class="main-menu-icon spaces-icon"></div>
+                <div class="main-menu-title">Other Spaces</div>
+            </div>
+            <div class="main-menu-card recover">
+                <div class="main-menu-icon recover-icon"></div>
+                <div class="main-menu-title">Recover Bin</div>
+            </div>
+            <div class="main-menu-card add">
+                <div class="main-menu-plus">+</div>
+            </div>
+        </div>`;
 }
 
-// Update the album button click event
-function renderAlbumSection() {
+document.getElementById("btn-album").addEventListener("click", () => {
     renderAlbumInterface();
-}
+    updateNavButtons();
+});
 
-function renderSwipeLeftInterface() {
-    const galleryContainer = document.querySelector(".gallery-container");
-    galleryContainer.innerHTML = "";
-
-    const swipeLeftData = [
-        { name: "Gallery View", icon: "https://via.placeholder.com/50", color: "#FFC107" },
-        { name: "Snaps", icon: "https://via.placeholder.com/50", color: "#03A9F4" },
-        { name: "Docs+", icon: "https://via.placeholder.com/50", color: "#8BC34A" },
-        { name: "Other Spaces", icon: "https://via.placeholder.com/50", color: "#FF5722" },
-        { name: "Recover Bin", icon: "https://via.placeholder.com/50", color: "#9E9E9E" },
-        { name: "New Album", icon: "https://via.placeholder.com/50", color: "#673AB7" }
-    ];
-
-    swipeLeftData.forEach(item => {
-        const itemDiv = document.createElement("div");
-        itemDiv.className = "swipe-left-item";
-        itemDiv.style.backgroundColor = item.color;
-        itemDiv.innerHTML = `
-            <img src="${item.icon}" alt="${item.name}" class="swipe-left-icon" />
-            <span class="swipe-left-name">${item.name}</span>
-        `;
-        galleryContainer.appendChild(itemDiv);
-    });
-}
-
-// Add swipe left gesture logic
 (function enableSwipeLeftGesture() {
     const galleryContainer = document.querySelector(".gallery-container");
     let startX = null;
-
     galleryContainer.addEventListener('touchstart', function (e) {
         if (e.touches.length !== 1) return;
         startX = e.touches[0].clientX;
     });
-
     galleryContainer.addEventListener('touchend', function (e) {
         if (startX === null) return;
         const deltaX = e.changedTouches[0].clientX - startX;
         if (deltaX < -50) {
-            renderSwipeLeftInterface();
+            renderAlbumInterface();
+            updateNavButtons();
         }
         startX = null;
     });

@@ -59,18 +59,32 @@ body {
 }
 
 .gallery-header {
-    text-align: center;
+    display: flex;
+    align-items: center;
     margin-bottom: 20px;
+    margin-left: 0;
 }
 
-.gallery-header h1 {
+/* Adjusting the layout for the gallery header */
+.gallery-header-title {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px; /* Adding space between title and count */
+}
+
+.gallery-header-title h1 {
     font-size: 2rem;
     margin: 0;
+    color: #fff;
+    font-weight: 600;
 }
 
-.gallery-header p {
+.gallery-header-count {
     font-size: 1rem;
     color: #aaa;
+    font-weight: 400;
+    margin: 0; /* Removing margin to align properly */
 }
 
 .gallery-grid {
@@ -169,4 +183,147 @@ body {
 
 .swipe-left-name {
     margin-top: 5px;
+}
+
+/* Style for the main menu grid and cards */
+.main-menu-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(2, 120px) auto;
+    gap: 28px 24px;
+    padding: 40px 24px 24px 24px;
+    justify-items: center;
+    align-items: center;
+    min-height: 80vh;
+}
+
+.main-menu-card {
+    background: #181818;
+    border-radius: 24px;
+    box-shadow: 0 4px 24px #000a, 0 1.5px 0 #222 inset;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 180px;
+    height: 120px;
+    position: relative;
+    transition: box-shadow 0.2s, transform 0.2s;
+}
+
+.main-menu-card:active {
+    transform: scale(0.97);
+    box-shadow: 0 2px 8px #000a;
+}
+
+.main-menu-title {
+    color: #e0e0e0;
+    font-size: 1.25rem;
+    font-weight: 500;
+    margin-top: 12px;
+    margin-bottom: 0;
+    letter-spacing: 0.01em;
+}
+
+.main-menu-underline {
+    width: 60px;
+    height: 4px;
+    border-radius: 2px;
+    margin-top: 10px;
+}
+
+.gallery-underline {
+    background: #a97a4a;
+}
+
+.snaps-underline {
+    background: #3a5a8c;
+}
+
+.docs-underline {
+    background: #3a5a8c;
+}
+
+.main-menu-icon {
+    width: 48px;
+    height: 48px;
+    margin-bottom: 0;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.gallery-icon {
+    background-image: url('https://img.icons8.com/ios-filled/50/ffffff/picture.png');
+    filter: brightness(0.7) sepia(1) hue-rotate(20deg) saturate(2) contrast(1.2);
+}
+
+.snaps-icon {
+    background-image: url('https://img.icons8.com/ios-filled/50/ffffff/video.png');
+    filter: brightness(0.7) grayscale(1) contrast(1.2);
+}
+
+.docs-icon {
+    background-image: url('https://img.icons8.com/ios-filled/50/ffffff/document--v1.png');
+    filter: brightness(0.7) grayscale(1) contrast(1.2);
+}
+
+.spaces-icon {
+    background-image: url('https://img.icons8.com/ios-filled/50/ffffff/grid-2.png');
+    filter: brightness(0.7) grayscale(1) contrast(1.2);
+}
+
+.recover-icon {
+    grid-column: span 2;
+    grid-row: 3;
+    justify-self: center;
+    align-self: end;
+    width: 100px;
+    height: 100px;
+    background-image: url('https://img.icons8.com/ios-filled/50/ffffff/delete-forever.png');
+    filter: brightness(0.7) grayscale(1) contrast(1.2);
+}
+
+.main-menu-card.add {
+    background: #181818;
+    box-shadow: 0 4px 24px #000a, 0 1.5px 0 #222 inset;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100px;
+    height: 100px;
+    position: absolute;
+    right: 24px;
+    bottom: 24px;
+    grid-column: 2 / 3;
+    grid-row: 3 / 4;
+}
+
+.main-menu-plus {
+    color: #fff;
+    font-size: 2.5rem;
+    font-weight: 400;
+    line-height: 1;
+    text-align: center;
+}
+
+@media (max-width: 600px) {
+    .main-menu-grid {
+        grid-template-columns: 1fr;
+        grid-template-rows: repeat(6, 100px);
+        gap: 18px 0;
+        padding: 24px 8px 8px 8px;
+    }
+
+    .main-menu-card {
+        width: 90vw;
+        height: 100px;
+    }
+
+    .main-menu-card.add {
+        width: 80vw;
+        height: 80px;
+        right: 8px;
+        bottom: 8px;
+    }
 }
