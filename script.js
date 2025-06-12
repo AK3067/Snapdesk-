@@ -133,29 +133,43 @@ function openAlbum(album) {
 }
 
 function updateNavButtons() {
-    const btnAll = document.getElementById("btn-all");
-    const btnAlbum = document.getElementById("btn-album");
+    const btnAll = document.querySelector(".bottom-button.active");
+    const btnAlbum = document.querySelector(".bottom-button:nth-child(2)");
 
     if (currentAlbum) {
         btnAll.classList.remove("active");
         btnAlbum.classList.add("active");
     } else {
-        btnAll.classList.add("active");
         btnAlbum.classList.remove("active");
+        btnAll.classList.add("active");
     }
 }
 
-document.getElementById("btn-all").addEventListener("click", () => {
-    currentAlbum = null;
-    showingAlbums = false;
-    renderGallery();
-    updateNavButtons();
-});
+// Remove duplicate event listeners for album and all buttons
+// Only use the new grid-based album interface
 
-document.getElementById("btn-album").addEventListener("click", () => {
-    renderAlbumInterface();
-    updateNavButtons();
-});
+// Remove these lines if present:
+// document.getElementById("btn-all").addEventListener(...)
+// document.getElementById("btn-album").addEventListener(...)
+
+// Ensure only one event listener for the Album button
+const albumButton = document.querySelector(".bottom-button:nth-child(2)");
+if (albumButton) {
+    albumButton.onclick = () => {
+        renderAlbumInterface();
+        updateNavButtons();
+    };
+}
+
+const allButton = document.querySelector(".bottom-button:nth-child(1)");
+if (allButton) {
+    allButton.onclick = () => {
+        currentAlbum = null;
+        showingAlbums = false;
+        renderGallery();
+        updateNavButtons();
+    };
+}
 
 let currentPreviewIndex = -1;
 let currentPreviewItems = [];
@@ -757,39 +771,64 @@ function updateGalleryHeaderCount() {
 })();
 
 function renderAlbumInterface() {
-    const galleryContainer = document.querySelector(".gallery-container");
-    galleryContainer.innerHTML = `
-        <div class="main-menu-grid">
-            <div class="main-menu-card gallery-view">
-                <div class="main-menu-icon gallery-icon"></div>
-                <div class="main-menu-title">Gallery View</div>
-                <div class="main-menu-underline gallery-underline"></div>
-            </div>
-            <div class="main-menu-card snaps">
-                <div class="main-menu-icon snaps-icon"></div>
-                <div class="main-menu-title">Snaps</div>
-                <div class="main-menu-underline snaps-underline"></div>
-            </div>
-            <div class="main-menu-card docs">
-                <div class="main-menu-icon docs-icon"></div>
-                <div class="main-menu-title">Docs+</div>
-                <div class="main-menu-underline docs-underline"></div>
-            </div>
-            <div class="main-menu-card spaces">
-                <div class="main-menu-icon spaces-icon"></div>
-                <div class="main-menu-title">Other Spaces</div>
-            </div>
-            <div class="main-menu-card recover">
-                <div class="main-menu-icon recover-icon"></div>
-                <div class="main-menu-title">Recover Bin</div>
-            </div>
-            <div class="main-menu-card add">
-                <div class="main-menu-plus">+</div>
-            </div>
-        </div>`;
+    galleryContainer.innerHTML = "";
+    // Create the main menu grid container
+    const grid = document.createElement("div");
+    grid.className = "main-menu-grid";
+
+    // Album cards (Gallery View, Snaps, Docs+, Other Spaces)
+    const albums = [
+        { name: "Gallery View", iconClass: "gallery-icon", underlineClass: "gallery-underline" },
+        { name: "Snaps", iconClass: "snaps-icon", underlineClass: "snaps-underline" },
+        { name: "Docs+", iconClass: "docs-icon", underlineClass: "docs-underline" },
+        { name: "Other Spaces", iconClass: "spaces-icon", underlineClass: "" }
+    ];
+
+    albums.forEach(album => {
+        const card = document.createElement("div");
+        card.className = "main-menu-card";
+        const icon = document.createElement("div");
+        icon.className = `main-menu-icon ${album.iconClass}`;
+        card.appendChild(icon);
+        const title = document.createElement("div");
+        title.className = "main-menu-title";
+        title.textContent = album.name;
+        card.appendChild(title);
+        if (album.underlineClass) {
+            const underline = document.createElement("div");
+            underline.className = `main-menu-underline ${album.underlineClass}`;
+            card.appendChild(underline);
+        }
+        grid.appendChild(card);
+    });
+
+    // Recover Bin card
+    const recoverCard = document.createElement("div");
+    recoverCard.className = "main-menu-card recover-bin";
+    const recoverIcon = document.createElement("div");
+    recoverIcon.className = "main-menu-icon recover-icon";
+    recoverCard.appendChild(recoverIcon);
+    const recoverTitle = document.createElement("div");
+    recoverTitle.className = "main-menu-title";
+    recoverTitle.textContent = "Recover Bin";
+    recoverCard.appendChild(recoverTitle);
+    grid.appendChild(recoverCard);
+
+    // Add button (floating)
+    const addCard = document.createElement("div");
+    addCard.className = "main-menu-card add";
+    const plus = document.createElement("div");
+    plus.className = "main-menu-plus";
+    plus.textContent = "+";
+    addCard.appendChild(plus);
+    grid.appendChild(addCard);
+
+    galleryContainer.appendChild(grid);
 }
 
-document.getElementById("btn-album").addEventListener("click", () => {
+// Update Album button event to use new render
+const albumButton = document.querySelector(".bottom-button:nth-child(2)");
+albumButton.addEventListener("click", () => {
     renderAlbumInterface();
     updateNavButtons();
 });

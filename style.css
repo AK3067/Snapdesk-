@@ -143,9 +143,12 @@ body {
 }
 
 .album-icon {
-    width: 50px;
-    height: 50px;
-    margin-bottom: 8px;
+    width: 48px;
+    height: 48px;
+    margin-bottom: 0;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
 }
 
 .album-name {
@@ -273,15 +276,36 @@ body {
     filter: brightness(0.7) grayscale(1) contrast(1.2);
 }
 
-.recover-icon {
+.recover-bin {
     grid-column: span 2;
     grid-row: 3;
     justify-self: center;
     align-self: end;
     width: 100px;
     height: 100px;
+    background: #181818;
+    border-radius: 24px;
+    box-shadow: 0 4px 24px #000a, 0 1.5px 0 #222 inset;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition: box-shadow 0.2s, transform 0.2s;
+}
+
+.recover-bin:active {
+    transform: scale(0.97);
+    box-shadow: 0 2px 8px #000a;
+}
+
+.recover-icon {
+    width: 48px;
+    height: 48px;
+    margin-bottom: 0;
     background-image: url('https://img.icons8.com/ios-filled/50/ffffff/delete-forever.png');
-    filter: brightness(0.7) grayscale(1) contrast(1.2);
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
 }
 
 .main-menu-card.add {
